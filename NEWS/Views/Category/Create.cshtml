@@ -1,0 +1,37 @@
+﻿@using NEWS.Core.Dtos
+@{
+    ViewData["Title"] = "Category Create";
+}
+@model IEnumerable<CategoryDto>
+<div class="section-top-border">
+    <div class="row">
+        <div class="col-lg-4 col-md-4 my-box">
+            <h3 class="mb-20">Categories</h3>
+            <form method="post">
+                <div class="mt-1">
+                    <input type="text" name="name" placeholder="Enter category name.."
+                           onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Name'" required
+                           class="single-input">
+                </div>
+                <button type="submit" class="genric-btn info radius mt-20">Add Category</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="categories-table">
+    <div class="progress-table">
+        <div class="table-head">
+            <div class="serial">#</div>
+            <div class="country">Name</div>
+        </div>
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            <div class="table-row">
+                <div class="serial">@(i + 1)</div>
+                <div class="country">@Model.ToList()[i].Name</div>
+                <a href="#" class="genric-btn warning radius mr-10">Edit</a>
+                <a href="/Category/Delete/@Model.ToList()[i].Id" class="genric-btn danger radius">Delete</a>
+            </div>
+        }
+    </div>
+</div>

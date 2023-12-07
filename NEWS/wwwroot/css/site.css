@@ -1,0 +1,35 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+
+.my-box {
+    margin: 0 auto;
+    border:10px;
+    padding:20px;
+    text-align:center;
+}
+
+.my-box input{
+    border: 1px solid grey;
+}
+
+.categories-table {
+    margin: 0 auto;
+    width:70%;
+}
