@@ -29,7 +29,21 @@ body {
     border: 1px solid grey;
 }
 
+    .my-box textarea {
+        border: 1px solid grey;
+        height:300px;
+    }
+
 .categories-table {
     margin: 0 auto;
     width:70%;
+}
+
+.center{
+    margin:0 auto;
+}
+ 
+.img-widht-50{
+    width:100%;
+    border-radius:10px;
 }

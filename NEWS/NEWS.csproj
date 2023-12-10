@@ -26,4 +26,8 @@
     <ProjectReference Include="..\NEWS.Core\NEWS.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+
 </Project>

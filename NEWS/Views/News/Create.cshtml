@@ -1,0 +1,39 @@
+﻿@using NEWS.Core.Dtos.News
+@{
+    ViewData["Title"] = "News Create";
+}
+@model NewsCreateDto
+<div class="section-top-border">
+    <div class="row">
+        <div class="col-lg-8 col-md-8 my-box">
+            <h3 class="mb-20">News Creation</h3>
+            <form method="post" enctype="multipart/form-data">
+                <div class="mt-1">
+                    <input asp-for="Title" type="text" placeholder="Enter title.."
+                           onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Name'" required
+                           class="single-input">
+                </div>
+                <div class="mt-10">
+                    <textarea asp-for="Text" class="single-textarea" placeholder="Enter text.." onfocus="this.placeholder = ''"
+                              onblur="this.placeholder = 'Message'" required></textarea>
+                </div>
+                <div class="single-element-widget mt-30">
+                    <div class="default-select" id="default-select">
+                        <select asp-for="CategoryId">
+                            <option value="">Select category...</option>
+                            @foreach (var cat in ViewBag.Categories)
+                            {
+                            <option value="@(cat.Id)">@cat.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                 <div class="mt-1">
+                    <input asp-for="Image" placeholder="Enter title.." multiple
+                           class="single-input">
+                </div>
+                <button type="submit" class="genric-btn info radius mt-20">Add Category</button>
+            </form>
+        </div>
+    </div>
+</div>

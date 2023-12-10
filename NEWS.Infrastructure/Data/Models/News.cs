@@ -37,5 +37,6 @@ namespace NEWS.Infrastructure.Data.Models
 
         [ForeignKey(nameof(ApplicationUserId))]
         public ApplicationUser ApplicationUser { get; set; }
+        public int Views { get; set; }
     }
 }

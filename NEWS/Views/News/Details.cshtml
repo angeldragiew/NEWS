@@ -1,0 +1,54 @@
+﻿@using NEWS.Core.Dtos.News
+@{
+    ViewData["Title"] = "News details";
+}
+@model NewsGetDto
+<div class="trending-area">
+    <div class="container">
+        <div class="trending-main">
+            <div class="row">
+                <div class="col-lg-8 ml-0">
+                    <!-- Trending Tittle -->
+                    <div class="about-right mb-90 mt-20">
+                        <div class="about-img">
+                            <img class="img-widht-50" src="~/uploads/@Model.Image" alt="">
+                        </div>
+                        <div class="heading-news mb-30 pt-30">
+                            <h3>@Model.Title</h3>
+                        </div>
+                        <div class="about-prea">
+                            @foreach (var paragraph in Model.Paragraphes)
+                            {
+                                <p class="about-pera1 mb-25">@paragraph</p>
+                            }
+                        </div>
+                        <span class="about-pera1 float-right">@Model.Date <b>@Model.Author</b></span>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <!-- Trending Top -->
+                    <div class="row  mt-40 ml-5">
+                        <h4>More like this</h4>
+                        @foreach (var news in ViewBag.LatestNews)
+                        {
+                            <div class="col-lg-12 col-md-6 col-sm-6">
+                                <div class="trending-top mb-30">
+                                    <div class="trend-top-img">
+                                        <img src="~/uploads/@news.Image" alt="">
+                                        <div class="trend-top-cap trend-top-cap2">
+                                            <h2><a href="/News/Details/@news.Id">@news.Title</a></h2>
+                                            <p>
+                                                by @news.Author -   @news.Date
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

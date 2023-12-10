@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NEWS.Core.Dtos;
+using NEWS.Core.Dtos.Category;
 using NEWS.Core.Services.Interfaces;
 using NEWS.Infrastructure.Data.Models;
 using NEWS.Infrastructure.Data.Repo;

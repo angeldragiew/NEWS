@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace NEWS.Core.Dtos
+namespace NEWS.Core.Dtos.Category
 {
     public class CategoryDto
     {

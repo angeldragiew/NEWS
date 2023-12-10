@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NEWS.Core.Services.Interfaces;
 using NEWS.Models;
 using System.Diagnostics;
 
@@ -6,16 +7,18 @@ namespace NEWS.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly INewsService _newsService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(INewsService newsService)
         {
-            _logger = logger;
+            _newsService = newsService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var latestNews = await _newsService.GetLatest();
+            ViewBag.TrendingNews = await _newsService.GetTrending();
+            return View(latestNews);
         }
 
         public IActionResult Privacy()

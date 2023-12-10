@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/NEWS.styles.css" asp-append-version="true" />
-    <link rel="manifest" href="site.webmanifest" asp-append-version="true">
     <link rel="shortcut icon" type="image/x-icon" href="~/img/favicon.ico asp-append-version="true" />
 
     <!-- CSS here -->
@@ -121,10 +120,10 @@
             @RenderBody()
         </main>
     </div>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/plugins/toastr/toastr.min.js"></script>
+    <script src="~/plugins/toastr/toastr.min.js" asp-append-version="true"></script>
     <partial name="_UserMessages" />
     @await RenderSectionAsync("Scripts", required: false)
 </body>

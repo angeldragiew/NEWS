@@ -1,6 +1,8 @@
-﻿@{
+﻿@using NEWS.Core.Dtos.News
+@{
     ViewData["Title"] = "Home Page";
 }
+@model List<NewsGetDto>
 
 <div class="trending-area fix pt-25 gray-bg">
     <div class="container">
@@ -13,11 +15,11 @@
                         <div class="single-slider">
                             <div class="trending-top mb-30">
                                 <div class="trend-top-img">
-                                    <img src="~/img/trending/trending_top2.jpg" alt="">
+                                    <img src="~/uploads/@Model[0].Image" alt="">
                                     <div class="trend-top-cap">
-                                        <span class="bgr" data-animation="fadeInUp" data-delay=".2s" data-duration="1000ms">Business</span>
-                                        <h2><a href="latest_news.html" data-animation="fadeInUp" data-delay=".4s" data-duration="1000ms">Anna Lora Stuns In White At Her Australian Premiere</a></h2>
-                                        <p data-animation="fadeInUp" data-delay=".6s" data-duration="1000ms">by Alice cloe   -   Jun 19, 2020</p>
+                                        <span class="bgr" data-animation="fadeInUp" data-delay=".2s" data-duration="1000ms">@Model[0].CategoryName</span>
+                                        <h2><a href="/News/Details/@Model[0].Id" data-animation="fadeInUp" data-delay=".4s" data-duration="1000ms">@Model[0].Title</a></h2>
+                                        <p data-animation="fadeInUp" data-delay=".6s" data-duration="1000ms">by @Model[0].   -   @Model[0].Date</p>
                                     </div>
                                 </div>
                             </div>
@@ -31,16 +33,15 @@
                         <div class="col-lg-12 col-md-6 col-sm-6">
                             <div class="trending-top mb-30">
                                 <div class="trend-top-img">
-                                    <img src="~/img/trending/trending_top3.jpg" alt="">
+                                    <img src="~/uploads/@Model[1].Image" alt="">
                                     <div class="trend-top-cap trend-top-cap2">
-                                        <span class="bgb">FASHION</span>
+                                        <span class="bgb">@Model[1].CategoryName</span>
                                         <h2>
-                                            <a href="latest_news.html">
-                                                Secretart for Economic Air
-                                                plane that looks like
+                                            <a href="/News/Details/@Model[1].Id">
+                                                @Model[1].Title
                                             </a>
                                         </h2>
-                                        <p>by Alice cloe   -   Jun 19, 2020</p>
+                                        <p>by @Model[1].Author -   @Model[1].Date</p>
                                     </div>
                                 </div>
                             </div>
@@ -48,11 +49,13 @@
                         <div class="col-lg-12 col-md-6 col-sm-6">
                             <div class="trending-top mb-30">
                                 <div class="trend-top-img">
-                                    <img src="~/img/trending/trending_top4.jpg" alt="">
+                                    <img src="~/uploads/@Model[2].Image" alt="">
                                     <div class="trend-top-cap trend-top-cap2">
-                                        <span class="bgg">TECH </span>
-                                        <h2><a href="latest_news.html">Secretart for Economic Air plane that looks like</a></h2>
-                                        <p>by Alice cloe   -   Jun 19, 2020</p>
+                                        <span class="bgg">@Model[2].CategoryName </span>
+                                        <h2><a href="/News/Details/@Model[2].Id">@Model[2].Title</a></h2>
+                                        <p>
+                                            by @Model[2].Author -   @Model[2].Date
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -63,3 +66,48 @@
         </div>
     </div>
 </div>
+<div class="weekly2-news-area pt-50 pb-30 gray-bg">
+    <div class="container">
+        <div class="weekly2-wrapper">
+            <div class="row">
+                <!-- Banner -->
+                <div class="col-lg-3">
+                    <div class="home-banner2 d-none d-lg-block">
+                        <img src="~/img/gallery/body_card2.png" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="slider-wrapper">
+                        <!-- section Tittle -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="small-tittle mb-30">
+                                    <h4>Most Popular</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Slider -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="weekly2-news-active d-flex">
+                                    @foreach (var news in ViewBag.TrendingNews)
+                                    {
+                                        <div class="weekly2-single">
+                                            <div class="weekly2-img">
+                                                <img src="~/uploads/@news.Image" alt="">
+                                            </div>
+                                            <div class="weekly2-caption">
+                                                <h4><a href="/News/Details/@news.Id">@news.Title</a></h4>
+                                                <p>@news.Author  |  2 hours ago</p>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>  

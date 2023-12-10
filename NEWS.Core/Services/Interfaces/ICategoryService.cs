@@ -1,4 +1,4 @@
-﻿using NEWS.Core.Dtos;
+﻿using NEWS.Core.Dtos.Category;
 using System;
 using System.Collections.Generic;
 using System.Linq;

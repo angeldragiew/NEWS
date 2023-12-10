@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NEWS.Core.Constants;
-using NEWS.Core.Dtos;
+using NEWS.Core.Dtos.Category;
 using NEWS.Core.Services;
 using NEWS.Core.Services.Interfaces;
 
