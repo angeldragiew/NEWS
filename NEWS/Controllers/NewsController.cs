@@ -19,6 +19,13 @@ namespace NEWS.Controllers
             _categoryService = categoryService;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> All(int? id = null)
+        {
+            ViewBag.Categories = await _categoryService.All();
+            var news = await _newsService.GetByCategoryId(id);
+            return View(news);
+        }
 
         [HttpGet]
         public async Task<IActionResult> Details(int id)

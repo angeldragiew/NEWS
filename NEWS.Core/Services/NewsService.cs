@@ -11,6 +11,7 @@ using NEWS.Infrastructure.Data.Repo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,11 +21,13 @@ namespace NEWS.Core.Services
     public class NewsService : INewsService
     {
         private readonly IRepository<News> _newsRepository;
+        private readonly IRepository<Category> _categoryRepository;
         private readonly IWebHostEnvironment _hostEnvironment;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public NewsService(IRepository<News> newsRepository,
+            IRepository<Category> categoryRepository,
              IWebHostEnvironment hostEnvironment,
              IHttpContextAccessor httpContextAccessor,
              UserManager<ApplicationUser> userManager)
@@ -33,6 +36,7 @@ namespace NEWS.Core.Services
             _hostEnvironment = hostEnvironment;
             _httpContextAccessor = httpContextAccessor;
             _userManager = userManager;
+            _categoryRepository = categoryRepository;
         }
         public async Task CreateAsync(NewsCreateDto dto)
         {
@@ -116,6 +120,34 @@ namespace NEWS.Core.Services
                 Title = news.Title,
                 Paragraphes = news.Text.Split(Environment.NewLine).ToList()
             };
+        }
+
+        public async Task<List<NewsGetDto>> GetByCategoryId(int? id = null)
+        {
+            if (id == null)
+            {
+                var firstCat = await _categoryRepository.All()
+                    .FirstOrDefaultAsync();
+                id = firstCat?.Id;
+            }
+            var news = await _newsRepository.All()
+                .Include(n => n.ApplicationUser)
+                .Include(n => n.Category)
+                 .Where(n => n.CategoryId == (id ?? 0))
+                 .ToListAsync();
+
+            return news.Select(n =>
+                new NewsGetDto()
+                {
+                    Id = n.Id,
+                    Author = n.ApplicationUser.Email,
+                    CategoryName = n.Category.Name,
+                    Date = n.Date.ToString("MM.dd.yyyy"),
+                    Image = n.Image,
+                    Title = n.Title.Length > 18 ? n.Title.Substring(0, 16) + "..." : n.Title,
+                    Paragraphes = n.Text.Split(Environment.NewLine).ToList()
+                }
+            ).ToList();
         }
 
         private string UploadFile(IFormFile file)

@@ -13,5 +13,6 @@ namespace NEWS.Core.Services.Interfaces
         Task<List<NewsGetDto>> GetLatest();
         Task<List<NewsGetDto>> GetTrending();
         Task<NewsGetDto> Details(int id);
+        Task<List<NewsGetDto>> GetByCategoryId(int? id = null);
     }
 }
