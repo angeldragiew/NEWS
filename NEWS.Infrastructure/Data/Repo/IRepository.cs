@@ -7,6 +7,8 @@
 
         Task AddAsync(T entity);
 
+        Task<T> GetByIdAsync(int id);
+
         Task AddRangeAsync(IEnumerable<T> entities);
 
         void Update(T entity);

@@ -11,6 +11,8 @@ namespace NEWS.Core.Services.Interfaces
     {
         Task<IEnumerable<CategoryDto>> All();
         Task CreateAsync(CategoryDto model);
+        Task<CategoryDto> GetById(int id);
+        Task UpdateAsync(CategoryDto model);
         Task Delete(int id);
     }
 }

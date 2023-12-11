@@ -45,6 +45,47 @@ namespace NEWS.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            try
+            {
+                var category = await _categoryService.GetById(id);
+                if (category == null)
+                {
+                    TempData[MessageConstant.ErrorMessage] = "Category not found!";
+                    return RedirectToAction("Create", "Category");
+                }
+                return View(category);
+            }
+            catch (Exception ex)
+            {
+                TempData[MessageConstant.ErrorMessage] = ex.Message;
+                return RedirectToAction("Create", "Category");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(CategoryDto category)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData[MessageConstant.ErrorMessage] = "Invalid data!";
+                return View(category);
+            }
+
+            try
+            {
+                await _categoryService.UpdateAsync(category);
+                TempData[MessageConstant.SuccessMessage] = "Category updated successfully!";
+            }
+            catch (Exception ex)
+            {
+                TempData[MessageConstant.ErrorMessage] = ex.Message;
+            }
+            return RedirectToAction("Create", "Category");
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             try

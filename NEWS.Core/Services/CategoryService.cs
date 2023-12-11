@@ -37,9 +37,40 @@ namespace NEWS.Core.Services
             await _categoryRepo.SaveChangesAsync();
         }
 
+        public async Task<CategoryDto> GetById(int id)
+        {
+            var category = await _categoryRepo.GetByIdAsync(id);
+
+            if (category == null)
+            {
+                throw new ArgumentNullException("Category not found!");
+            }
+
+            return new CategoryDto
+            {
+                Id = category.Id,
+                Name = category.Name
+            };
+        }
+
+        public async Task UpdateAsync(CategoryDto model)
+        {
+            var existingCategory = await _categoryRepo.GetByIdAsync(model.Id);
+
+            if (existingCategory == null)
+            {
+                throw new ArgumentNullException("Category not found!");
+            }
+
+            existingCategory.Name = model.Name;
+
+            _categoryRepo.Update(existingCategory);
+            await _categoryRepo.SaveChangesAsync();
+        }
+
         public async Task Delete(int id)
         {
-            Category category = await _categoryRepo.All().FirstOrDefaultAsync(e => e.Id == id);
+            Category category = await _categoryRepo.GetByIdAsync(id);
 
             if (category == null)
             {

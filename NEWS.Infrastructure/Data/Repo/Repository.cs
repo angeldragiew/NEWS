@@ -28,6 +28,11 @@ namespace NEWS.Infrastructure.Data.Repo
             return this.dbSet;
         }
 
+        public async Task<T> GetByIdAsync(int id)
+        {
+            return await dbSet.FindAsync(id);
+        }
+
         public void Delete(T entity)
         {
             dbSet.Remove(entity);

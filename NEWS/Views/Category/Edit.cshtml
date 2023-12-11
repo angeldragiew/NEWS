@@ -1,0 +1,22 @@
+﻿@model NEWS.Core.Dtos.Category.CategoryDto
+
+@{
+    ViewData["Title"] = "Edit Category";
+}
+
+<div class="section-top-border">
+    <div class="row">
+        <div class="col-lg-4 col-md-4 my-box">
+            <h3 class="mb-20">Edit Category</h3>
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="mt-1">
+                    <input type="text" asp-for="Name" placeholder="Enter category name.."
+                           class="single-input">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <button type="submit" class="genric-btn info radius mt-20">Update Category</button>
+            </form>
+        </div>
+    </div>
+</div>

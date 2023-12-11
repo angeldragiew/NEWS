@@ -29,8 +29,12 @@
             <div class="table-row">
                 <div class="serial">@(i + 1)</div>
                 <div class="country">@Model.ToList()[i].Name</div>
-                <a href="#" class="genric-btn warning radius mr-10">Edit</a>
-                <a href="/Category/Delete/@Model.ToList()[i].Id" class="genric-btn danger radius">Delete</a>
+                <div>
+                    <a href="@Url.Action("Edit", "Category", new { id = Model.ToList()[i].Id })" class="genric-btn warning radius mr-10">Edit</a>
+                </div>
+                <div>
+                    <a href="@Url.Action("Delete", "Category", new { id = Model.ToList()[i].Id })" class="genric-btn danger radius">Delete</a>
+                </div>
             </div>
         }
     </div>

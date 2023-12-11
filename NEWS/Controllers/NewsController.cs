@@ -36,7 +36,7 @@ namespace NEWS.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> Create()
         {
             ViewBag.Categories = await _categoryService.All();
@@ -44,7 +44,7 @@ namespace NEWS.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> Create([FromForm] NewsCreateDto dto)
         {
             await _newsService.CreateAsync(dto);
