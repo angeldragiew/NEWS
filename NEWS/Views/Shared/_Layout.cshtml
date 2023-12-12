@@ -10,19 +10,19 @@
     <link rel="shortcut icon" type="image/x-icon" href="~/img/favicon.ico asp-append-version="true" />
 
     <!-- CSS here -->
-    <link rel="stylesheet" href="~/css/bootstrap.min.css" asp-append-version="true" >
-    <link rel="stylesheet" href="~/css/owl.carousel.min.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/ticker-style.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/flaticon.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/slicknav.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/animate.min.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/magnific-popup.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/fontawesome-all.min.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/themify-icons.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/slick.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/nice-select.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/plugins/toastr/toastr.min.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/ticker-style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/flaticon.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/slicknav.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/animate.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/magnific-popup.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/fontawesome-all.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/themify-icons.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/slick.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/nice-select.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/plugins/toastr/toastr.min.css" asp-append-version="true" />
 </head>
 <body>
     <header>
@@ -77,12 +77,11 @@
                                             <li>
                                                 <a href="#">Admin</a>
                                                 <ul class="submenu">
-                                                    <li><a href="/Category/Create">Category</a></li>
-                                                    <li><a href="/News/Create">News</a></li>
+                                                    <li><a href="/Category/Create">Create Category</a></li>
+                                                    <li><a href="/News/Create">Create News</a></li>
+                                                    <li><a href="/News/MyNews">My News</a></li>
                                                 </ul>
                                             </li>
-                                            <li><a href="contact.html">Login</a></li>
-                                            <li><a href="contact.html">Register</a></li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -91,15 +90,20 @@
                                 <div class="header-right f-right d-none d-lg-block">
                                     <!-- Heder social -->
                                     <ul class="header-social">
-                                        <li><a href="https://www.fb.com/sai4ull"><i class="fab fa-facebook-f"></i></a></li>
-                                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                        <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                                        <li> <a href="#"><i class="fab fa-youtube"></i></a></li>
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <li class="nav-item">
+                                                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                                                    <button type="submit" class="logout-btn">Logout</button>
+                                                </form>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li><a href="/Identity/Account/Login">Login</a></li>
+                                            <li><a href="/Identity/Account/Regiser">Register</a></li>
+                                        }
                                     </ul>
-                                    <!-- Search Nav -->
-                                    <div class="nav-search search-switch">
-                                        <i class="fa fa-search"></i>
-                                    </div>
                                 </div>
                             </div>
                             <!-- Mobile Menu -->

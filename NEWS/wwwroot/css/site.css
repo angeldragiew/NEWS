@@ -47,3 +47,12 @@ body {
     width:100%;
     border-radius:10px;
 }
+
+.mt-minus{
+    margin-top:-50px;
+}
+
+.logout-btn{
+    background:none;
+    border:none;
+}

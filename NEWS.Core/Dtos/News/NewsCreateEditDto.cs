@@ -10,9 +10,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace NEWS.Core.Dtos.News
 {
-    public class NewsCreateDto
+    public class NewsCreateEditDto
     {
-
+        public int Id { get; set; }
         [Required]
         [StringLength(50)]
         public string Title { get; set; }
@@ -21,7 +21,8 @@ namespace NEWS.Core.Dtos.News
         [StringLength(3000)]
         public string Text { get; set; }
 
-        public IFormFile Image { get; set; }
+        public IFormFile? Image { get; set; }
+        public string? ImageStr { get; set; }
 
         [Required]
         public int? CategoryId { get; set; }

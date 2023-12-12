@@ -39,13 +39,12 @@ namespace NEWS.Core.Services
             _userManager = userManager;
             _categoryRepository = categoryRepository;
         }
-        public async Task CreateAsync(NewsCreateDto dto)
+        public async Task CreateAsync(NewsCreateEditDto dto)
         {
-            var path = UploadFile(dto.Image);
             News news = new News()
             {
                 CategoryId = dto.CategoryId,
-                Image = path,
+                Image = UploadFile(dto.Image),
                 ApplicationUserId = _userManager.GetUserId(_httpContextAccessor!.HttpContext!.User),
                 Date = DateTime.Now,
                 Text = dto.Text,
@@ -55,8 +54,29 @@ namespace NEWS.Core.Services
             await _newsRepository.AddAsync(news);
             await _newsRepository.SaveChangesAsync();
         }
+        public async Task UpdateAsync(NewsCreateEditDto dto)
+        {
+            var existingNew = await _newsRepository.GetByIdAsync(dto.Id);
+            if (existingNew == null)
+            {
+                throw new ArgumentNullException("New not found!");
+            }
 
-        public async Task<NewsGetDto> GetById(int id)
+            if(dto.Image is not null)
+            {
+                DeleteFile(existingNew.Image);
+                existingNew.Image = UploadFile(dto.Image);
+            }
+
+            existingNew.Date = DateTime.Now;
+            existingNew.Title = dto.Title;
+            existingNew.CategoryId = dto.CategoryId;
+            existingNew.Text = dto.Text;
+
+            _newsRepository.Update(existingNew);
+            await _newsRepository.SaveChangesAsync();
+        }
+        public async Task<NewsCreateEditDto> GetById(int id)
         {
             var news = await _newsRepository.GetByIdAsync(id);
 
@@ -65,15 +85,13 @@ namespace NEWS.Core.Services
                 throw new ArgumentNullException("News not found!");
             }
 
-            return new NewsGetDto
+            return new NewsCreateEditDto
             {
                 Id = news.Id,
-                Date = news.Date.ToString(),
                 Title = news.Title,
-                Image = news.Image,
-                CategoryName = news.Category.Name,
-                Author = news.ApplicationUser.FirstName,
-                //Paragraphes
+                ImageStr = news.Image,
+                CategoryId = news.CategoryId,
+                Text = news.Text
             };
         }
 
@@ -172,25 +190,6 @@ namespace NEWS.Core.Services
             ).ToList();
         }
 
-        public async Task UpdateAsync(NewsUpdateDto model)
-        {
-            var existingNew = await _newsRepository.GetByIdAsync(model.Id);
-            if (existingNew == null)
-            {
-                throw new ArgumentNullException("New not found!");
-            }
-
-            existingNew.Date = DateTime.Now;
-            existingNew.Title = model.Title;
-            existingNew.Image = model.Image;
-            existingNew.CategoryId = model.CategoryId;
-            existingNew.ApplicationUserId = _userManager.GetUserId(_httpContextAccessor!.HttpContext!.User);
-            //Paragraphes 
-            
-            _newsRepository.Update(existingNew);
-            await _newsRepository.SaveChangesAsync();
-        }
-
         public async Task DeleteAsync(int id)
         {
             var existingNew = await _newsRepository.GetByIdAsync(id);
@@ -230,6 +229,31 @@ namespace NEWS.Core.Services
             {
                 File.Delete(filePath);
             }
+        }
+
+        public async Task<List<NewsGetDto>> GetCurrentUserNews()
+        {
+            var id = _userManager.GetUserId(_httpContextAccessor!.HttpContext!.User);
+
+            var news = await _newsRepository.All()
+                .Include(n => n.ApplicationUser)
+                .Include(n => n.Category)
+                .Where(n => n.ApplicationUserId == id)
+                .OrderByDescending(n=>n.Date)
+                .ToListAsync();
+
+            return news.Select(n =>
+               new NewsGetDto()
+               {
+                   Id = n.Id,
+                   Author = n.ApplicationUser.Email,
+                   CategoryName = n.Category.Name,
+                   Date = n.Date.ToString("MM.dd.yyyy"),
+                   Image = n.Image,
+                   Title = n.Title.Length > 18 ? n.Title.Substring(0, 16) + "..." : n.Title,
+                   Paragraphes = n.Text.Split(Environment.NewLine).ToList()
+               }
+           ).ToList();
         }
     }
 }

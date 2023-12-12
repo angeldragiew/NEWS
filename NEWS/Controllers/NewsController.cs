@@ -29,6 +29,14 @@ namespace NEWS.Controllers
         }
 
         [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> MyNews()
+        {
+            var news = await _newsService.GetCurrentUserNews();
+            return View(news);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             ViewBag.LatestNews = await _newsService.GetLatest();
@@ -37,7 +45,7 @@ namespace NEWS.Controllers
         }
 
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> Create()
         {
             ViewBag.Categories = await _categoryService.All();
@@ -45,45 +53,72 @@ namespace NEWS.Controllers
         }
 
         [HttpPost]
-        //[Authorize]
-        public async Task<IActionResult> Create([FromForm] NewsCreateDto dto)
+        [Authorize]
+        public async Task<IActionResult> Create([FromForm] NewsCreateEditDto dto)
         {
-            await _newsService.CreateAsync(dto);
-            return RedirectToAction("Create", "News");
+            if (!ModelState.IsValid || dto.Image is null)
+            {
+                TempData[MessageConstant.ErrorMessage] = "Invalid data!";
+                ViewBag.Categories = await _categoryService.All();
+                return View(dto);
+            }
+
+            try
+            {
+                await _newsService.CreateAsync(dto);
+                TempData[MessageConstant.SuccessMessage] = "News created successfully!";
+                return RedirectToAction("All");
+            }
+            catch (Exception ex)
+            {
+                TempData[MessageConstant.ErrorMessage] = ex.Message;
+                return View(dto);
+            }
         }
 
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
-            var news = await _newsService.GetById(id);
-            if (news == null)
+            try
             {
-                TempData[MessageConstant.ErrorMessage] = "News not found!";
-                return RedirectToAction("All");
+                var news = await _newsService.GetById(id);
+                ViewBag.Categories = await _categoryService.All();
+                return View(news);
             }
-
-            ViewBag.Categories = await _categoryService.All();
-            return View(news);
+            catch (Exception ex)
+            {
+                TempData[MessageConstant.ErrorMessage] = ex.Message;
+                return RedirectToAction("MyNews");
+            }
         }
 
         [HttpPost]
-        //[Authorize]
-        public async Task<IActionResult> Edit(NewsUpdateDto dto)
+        [Authorize]
+        public async Task<IActionResult> Edit(NewsCreateEditDto dto)
         {
             if (!ModelState.IsValid)
             {
                 TempData[MessageConstant.ErrorMessage] = "Invalid data!";
+                ViewBag.Categories = await _categoryService.All();
                 return View(dto);
             }
 
-            await _newsService.UpdateAsync(dto);
-            TempData[MessageConstant.SuccessMessage] = "News updated successfully!";
-            return RedirectToAction("All");
+            try
+            {
+                await _newsService.UpdateAsync(dto);
+                TempData[MessageConstant.SuccessMessage] = "News updated successfully!";
+                return RedirectToAction("MyNews");
+            }
+            catch (Exception ex)
+            {
+                TempData[MessageConstant.ErrorMessage] = ex.Message;
+                return View(dto);
+            }
         }
 
-        [HttpPost]
-        //[Authorize]
+        [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -96,7 +131,7 @@ namespace NEWS.Controllers
                 TempData[MessageConstant.ErrorMessage] = ex.Message;
             }
 
-            return RedirectToAction("All");
+            return RedirectToAction("MyNews");
         }
     }
 }
