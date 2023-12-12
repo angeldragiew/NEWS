@@ -1,0 +1,36 @@
+﻿@model NewsUpdateDto
+@{
+    ViewData["Title"] = "Edit News";
+}
+
+<div class="section-top-border">
+    <div class="row">
+        <div class="col-lg-8 col-md-8 my-box">
+            <h3 class="mb-20">Edit News</h3>
+            <form method="post" enctype="multipart/form-data">
+                <input asp-for="Id" type="hidden" />
+                <div class="mt-1">
+                    <input asp-for="Title" type="text" placeholder="Enter title.." class="single-input" value="@Model.Title">
+                </div>
+                <div class="mt-10">
+                    <textarea asp-for="Text" class="single-textarea" placeholder="Enter text.." required>@Model.Text</textarea>
+                </div>
+                <div class="single-element-widget mt-30">
+                    <div class="default-select" id="default-select">
+                        <select asp-for="CategoryId">
+                            <option value="">Select category...</option>
+                            @foreach (var cat in ViewBag.Categories)
+                            {
+                                <option value="@(cat.Id)">@cat.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="mt-1">
+                    <input asp-for="Image" placeholder="Enter title.." multiple class="single-input">
+                </div>
+                <button type="submit" class="genric-btn info radius mt-20">Update News</button>
+            </form>
+        </div>
+    </div>
+</div>

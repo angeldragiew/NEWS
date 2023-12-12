@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using NEWS.Core.Dtos.Category;
 using NEWS.Core.Dtos.News;
 using NEWS.Core.Services.Interfaces;
 using NEWS.Data.Migrations;
@@ -53,6 +54,27 @@ namespace NEWS.Core.Services
 
             await _newsRepository.AddAsync(news);
             await _newsRepository.SaveChangesAsync();
+        }
+
+        public async Task<NewsGetDto> GetById(int id)
+        {
+            var news = await _newsRepository.GetByIdAsync(id);
+
+            if (news == null)
+            {
+                throw new ArgumentNullException("News not found!");
+            }
+
+            return new NewsGetDto
+            {
+                Id = news.Id,
+                Date = news.Date.ToString(),
+                Title = news.Title,
+                Image = news.Image,
+                CategoryName = news.Category.Name,
+                Author = news.ApplicationUser.FirstName,
+                //Paragraphes
+            };
         }
 
         public async Task<List<NewsGetDto>> GetLatest()
@@ -148,6 +170,38 @@ namespace NEWS.Core.Services
                     Paragraphes = n.Text.Split(Environment.NewLine).ToList()
                 }
             ).ToList();
+        }
+
+        public async Task UpdateAsync(NewsUpdateDto model)
+        {
+            var existingNew = await _newsRepository.GetByIdAsync(model.Id);
+            if (existingNew == null)
+            {
+                throw new ArgumentNullException("New not found!");
+            }
+
+            existingNew.Date = DateTime.Now;
+            existingNew.Title = model.Title;
+            existingNew.Image = model.Image;
+            existingNew.CategoryId = model.CategoryId;
+            existingNew.ApplicationUserId = _userManager.GetUserId(_httpContextAccessor!.HttpContext!.User);
+            //Paragraphes 
+            
+            _newsRepository.Update(existingNew);
+            await _newsRepository.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var existingNew = await _newsRepository.GetByIdAsync(id);
+
+            if (existingNew == null)
+            {
+                throw new ArgumentNullException("Unknown new!");
+            }
+
+            _newsRepository.Delete(existingNew);
+            await _newsRepository.SaveChangesAsync();
         }
 
         private string UploadFile(IFormFile file)

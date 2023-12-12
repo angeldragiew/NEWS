@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NEWS.Core.Constants;
 using NEWS.Core.Dtos.Category;
-using NEWS.Core.Services;
 using NEWS.Core.Services.Interfaces;
 
 namespace NEWS.Controllers
@@ -91,11 +90,11 @@ namespace NEWS.Controllers
             try
             {
                 await _categoryService.Delete(id);
-                //TempData[MessageConstant.SuccessMessage] = "Category deleted successfully!";
+                TempData[MessageConstant.SuccessMessage] = "Category deleted successfully!";
             }
             catch (ArgumentNullException ex)
             {
-                //TempData[MessageConstant.ErrorMessage] = ex.Message;
+                TempData[MessageConstant.ErrorMessage] = ex.Message;
             }
             return RedirectToAction("Create", "Category");
         }

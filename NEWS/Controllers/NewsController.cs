@@ -4,6 +4,7 @@ using NEWS.Core.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using NEWS.Core.Dtos.News;
+using NEWS.Core.Constants;
 
 namespace NEWS.Controllers
 {
@@ -49,6 +50,53 @@ namespace NEWS.Controllers
         {
             await _newsService.CreateAsync(dto);
             return RedirectToAction("Create", "News");
+        }
+
+        [HttpGet]
+        //[Authorize]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var news = await _newsService.GetById(id);
+            if (news == null)
+            {
+                TempData[MessageConstant.ErrorMessage] = "News not found!";
+                return RedirectToAction("All");
+            }
+
+            ViewBag.Categories = await _categoryService.All();
+            return View(news);
+        }
+
+        [HttpPost]
+        //[Authorize]
+        public async Task<IActionResult> Edit(NewsUpdateDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData[MessageConstant.ErrorMessage] = "Invalid data!";
+                return View(dto);
+            }
+
+            await _newsService.UpdateAsync(dto);
+            TempData[MessageConstant.SuccessMessage] = "News updated successfully!";
+            return RedirectToAction("All");
+        }
+
+        [HttpPost]
+        //[Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                await _newsService.DeleteAsync(id);
+                TempData[MessageConstant.SuccessMessage] = "News deleted successfully!";
+            }
+            catch (Exception ex)
+            {
+                TempData[MessageConstant.ErrorMessage] = ex.Message;
+            }
+
+            return RedirectToAction("All");
         }
     }
 }
