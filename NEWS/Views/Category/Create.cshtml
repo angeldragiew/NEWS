@@ -30,12 +30,14 @@
         <div class="table-head">
             <div class="serial">#</div>
             <div class="country">Name</div>
+            <div class="country">Locked</div>
         </div>
         @for (int i = 0; i < ViewBag.Categories.Count; i++)
         {
             <div class="table-row">
                 <div class="serial">@(i + 1)</div>
                 <div class="country">@ViewBag.Categories[i].Name</div>
+                <div class="country">@(ViewBag.Categories[i].IsLocked ? "Yes" : "No")</div>
                 <div>
                     <a href="@Url.Action("Edit", "Category", new { id = ViewBag.Categories[i].Id })" class="genric-btn warning radius mr-10">Edit</a>
                 </div>

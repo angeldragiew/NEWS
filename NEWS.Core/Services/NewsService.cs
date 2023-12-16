@@ -281,7 +281,7 @@ namespace NEWS.Core.Services
 
         private void ThrowIfCategoryIsLocked(Category cat)
         {
-            if (cat?.IsLocked ?? false)
+            if ((cat?.IsLocked ?? false) && (!_httpContextAccessor?.HttpContext?.User?.Identity?.IsAuthenticated ?? false))
             {
                 throw new AccessViolationException("Log in to get access to this category!");
             }
