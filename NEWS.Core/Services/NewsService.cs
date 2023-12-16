@@ -108,7 +108,7 @@ namespace NEWS.Core.Services
                 new NewsGetDto()
                 {
                     Id = n.Id,
-                    Author = n.ApplicationUser.Email,
+                    Author = $"{n.ApplicationUser.FirstName} {n.ApplicationUser.LastName}",
                     CategoryName = n.Category.Name,
                     Date = n.Date.ToString("MM.dd.yyyy"),
                     Image = n.Image,
@@ -130,7 +130,7 @@ namespace NEWS.Core.Services
                 new NewsGetDto()
                 {
                     Id = n.Id,
-                    Author = n.ApplicationUser.Email,
+                    Author = $"{n.ApplicationUser.FirstName} {n.ApplicationUser.LastName}",
                     CategoryName = n.Category.Name,
                     Date = n.Date.ToString("MM.dd.yyyy"),
                     Image = n.Image,
@@ -141,24 +141,41 @@ namespace NEWS.Core.Services
 
         public async Task<NewsGetDto> Details(int id)
         {
-            var news = await _newsRepository.All()
+            var allAews = await _newsRepository.All()
                 .Include(n => n.ApplicationUser)
                 .Include(n => n.Category)
-                .FirstOrDefaultAsync(n => n.Id == id);
+                .ToListAsync();
 
-            news.Views += 1;
-            _newsRepository.Update(news);
+            var detailsNews = allAews.FirstOrDefault(n => n.Id == id);
+            ThrowIfCategoryIsLocked(detailsNews.Category);
+
+            var similarNews = allAews
+                .Where(n => n.CategoryId == detailsNews.CategoryId && n.Id != detailsNews.Id)
+                .Take(3)
+                .Select(n=> new SimilarNewsDto()
+                {
+                    Id = n.Id,
+                    Author = $"{n.ApplicationUser.FirstName} {n.ApplicationUser.LastName}",
+                    CategoryName = n.Category.Name,
+                    Date = n.Date.ToString("MM.dd.yyyy"),
+                    Image = n.Image,
+                    Title = n.Title
+                }).ToList();
+
+            detailsNews.Views += 1;
+            _newsRepository.Update(detailsNews);
             await _newsRepository.SaveChangesAsync();
 
             return new NewsGetDto()
             {
-                Id = news.Id,
-                Author = news.ApplicationUser.Email,
-                CategoryName = news.Category.Name,
-                Date = news.Date.ToString("MM.dd.yyyy"),
-                Image = news.Image,
-                Title = news.Title,
-                Paragraphes = news.Text.Split(Environment.NewLine).ToList()
+                Id = detailsNews.Id,
+                Author = $"{detailsNews.ApplicationUser.FirstName} {detailsNews.ApplicationUser.LastName}",
+                CategoryName = detailsNews.Category.Name,
+                Date = detailsNews.Date.ToString("MM.dd.yyyy"),
+                Image = detailsNews.Image,
+                Title = detailsNews.Title,
+                Paragraphes = detailsNews.Text.Split(Environment.NewLine).ToList(),
+                SimilarNews = similarNews
             };
         }
 
@@ -170,17 +187,23 @@ namespace NEWS.Core.Services
                     .FirstOrDefaultAsync();
                 id = firstCat?.Id;
             }
+
+            var category = await _categoryRepository.All()
+                    .FirstOrDefaultAsync(c=>c.Id==id);
+            ThrowIfCategoryIsLocked(category);
+
             var news = await _newsRepository.All()
                 .Include(n => n.ApplicationUser)
                 .Include(n => n.Category)
                  .Where(n => n.CategoryId == (id ?? 0))
                  .ToListAsync();
 
+
             return news.Select(n =>
                 new NewsGetDto()
                 {
                     Id = n.Id,
-                    Author = n.ApplicationUser.Email,
+                    Author = $"{n.ApplicationUser.FirstName} {n.ApplicationUser.LastName}",
                     CategoryName = n.Category.Name,
                     Date = n.Date.ToString("MM.dd.yyyy"),
                     Image = n.Image,
@@ -246,7 +269,7 @@ namespace NEWS.Core.Services
                new NewsGetDto()
                {
                    Id = n.Id,
-                   Author = n.ApplicationUser.Email,
+                   Author = $"{n.ApplicationUser.FirstName} {n.ApplicationUser.LastName}",
                    CategoryName = n.Category.Name,
                    Date = n.Date.ToString("MM.dd.yyyy"),
                    Image = n.Image,
@@ -254,6 +277,14 @@ namespace NEWS.Core.Services
                    Paragraphes = n.Text.Split(Environment.NewLine).ToList()
                }
            ).ToList();
+        }
+
+        private void ThrowIfCategoryIsLocked(Category cat)
+        {
+            if (cat?.IsLocked ?? false)
+            {
+                throw new AccessViolationException("Log in to get access to this category!");
+            }
         }
     }
 }

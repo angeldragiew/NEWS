@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using NEWS.Core.Constants
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -74,14 +75,17 @@
                                         <ul id="navigation">
                                             <li><a href="/">Home</a></li>
                                             <li><a href="/News/All">Categories</a></li>
-                                            <li>
-                                                <a href="#">Admin</a>
-                                                <ul class="submenu">
-                                                    <li><a href="/Category/Create">Create Category</a></li>
-                                                    <li><a href="/News/Create">Create News</a></li>
-                                                    <li><a href="/News/MyNews">My News</a></li>
-                                                </ul>
-                                            </li>
+                                            @if (User.IsInRole(RolesConstants.AdminRoleName)){
+                                                <li>
+                                                    <a href="#">Admin</a>
+                                                    <ul class="submenu">
+                                                        <li><a href="/Category/Create">Create Category</a></li>
+                                                        <li><a href="/News/Create">Create News</a></li>
+                                                        <li><a href="/News/MyNews">My News</a></li>
+                                                        <li><a href="/User/ManageUsers">Manage Users</a></li>
+                                                    </ul>
+                                                </li>
+                                            }
                                         </ul>
                                     </nav>
                                 </div>
@@ -101,7 +105,7 @@
                                         else
                                         {
                                             <li><a href="/Identity/Account/Login">Login</a></li>
-                                            <li><a href="/Identity/Account/Regiser">Register</a></li>
+                                            <li><a href="/Identity/Account/Register">Register</a></li>
                                         }
                                     </ul>
                                 </div>

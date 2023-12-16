@@ -1,0 +1,30 @@
+﻿@using NEWS.Core.Dtos.User
+
+@model List<UserDto>
+<div class="categories-table">
+    <div class="progress-table">
+        <div class="table-head">
+            <div class="serial">#</div>
+            <div class="country">Name</div>
+            <div class="country">Email</div>
+        </div>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <div class="table-row">
+                <div class="serial">@(i + 1)</div>
+                <div class="country">@Model[i].Name</div>
+                <div class="country">@Model[i].Email</div>
+                <div>
+                    @if (!@Model[i].IsAdmin)
+                    {
+                        <a href="/User/AddRemoveRole/?userId=@(Model[i].Id)&shouldAddAdminRole=true" class="genric-btn success radius">Add Admin Role</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("AddRemoveRole", "User", new { userId = Model[i].Id })" class="genric-btn danger radius">Remove Admin Role</a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

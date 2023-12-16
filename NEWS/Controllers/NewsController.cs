@@ -23,13 +23,21 @@ namespace NEWS.Controllers
         [HttpGet]
         public async Task<IActionResult> All(int? id = null)
         {
-            ViewBag.Categories = await _categoryService.All();
-            var news = await _newsService.GetByCategoryId(id);
-            return View(news);
+            try
+            {
+                var news = await _newsService.GetByCategoryId(id);
+                ViewBag.Categories = await _categoryService.All();
+                return View(news);
+            }
+            catch (Exception ex)
+            {
+                TempData[MessageConstant.WarningMessage] = ex.Message;
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            }
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = RolesConstants.AdminRoleName)]
         public async Task<IActionResult> MyNews()
         {
             var news = await _newsService.GetCurrentUserNews();
@@ -39,13 +47,20 @@ namespace NEWS.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            ViewBag.LatestNews = await _newsService.GetLatest();
-            var news = await _newsService.Details(id);
-            return View(news);
+            try
+            {
+                var news = await _newsService.Details(id);
+                return View(news);
+            }
+            catch (Exception ex)
+            {
+                TempData[MessageConstant.WarningMessage] = ex.Message;
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            }
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = RolesConstants.AdminRoleName)]
         public async Task<IActionResult> Create()
         {
             ViewBag.Categories = await _categoryService.All();
@@ -53,7 +68,7 @@ namespace NEWS.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = RolesConstants.AdminRoleName)]
         public async Task<IActionResult> Create([FromForm] NewsCreateEditDto dto)
         {
             if (!ModelState.IsValid || dto.Image is null)
@@ -77,7 +92,7 @@ namespace NEWS.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = RolesConstants.AdminRoleName)]
         public async Task<IActionResult> Edit(int id)
         {
             try
@@ -94,7 +109,7 @@ namespace NEWS.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = RolesConstants.AdminRoleName)]
         public async Task<IActionResult> Edit(NewsCreateEditDto dto)
         {
             if (!ModelState.IsValid)
@@ -118,7 +133,7 @@ namespace NEWS.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = RolesConstants.AdminRoleName)]
         public async Task<IActionResult> Delete(int id)
         {
             try

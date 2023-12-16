@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NEWS.Core.Constants;
 using NEWS.Core.Dtos.Category;
 using NEWS.Core.Services.Interfaces;
 
 namespace NEWS.Controllers
 {
+    [Authorize(Roles = RolesConstants.AdminRoleName)]
     public class CategoryController : Controller
     {
         private readonly ICategoryService _categoryService;
