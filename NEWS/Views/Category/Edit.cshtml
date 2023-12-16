@@ -15,6 +15,13 @@
                            class="single-input">
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
+                <div class="switch-wrap d-flex justify-content-between mt-10 center">
+                    <span>Lock this category for users without profile:</span>
+                    <div class="confirm-switch">
+                        <input asp-for="IsLocked" type="checkbox" id="confirm-switch" class="is-locked" checked="@Model.IsLocked">
+                        <label for="confirm-switch"></label> 
+                    </div>
+                </div>
                 <button type="submit" class="genric-btn info radius mt-20">Update Category</button>
             </form>
         </div>

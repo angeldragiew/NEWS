@@ -56,3 +56,8 @@ body {
     background:none;
     border:none;
 }
+
+.popular-img{
+    height:150px;
+    object-fit:cover;
+}

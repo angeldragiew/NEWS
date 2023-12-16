@@ -23,6 +23,7 @@ namespace NEWS.Core.Services
                 {
                     Id = c.Id,
                     Name = c.Name,
+                    IsLocked = c.IsLocked ?? false
                 }).ToListAsync();
         }
 
@@ -31,6 +32,7 @@ namespace NEWS.Core.Services
             Category category = new Category()
             {
                 Name = model.Name,
+                IsLocked = model.IsLocked
             };
 
             await _categoryRepo.AddAsync(category);
@@ -49,7 +51,8 @@ namespace NEWS.Core.Services
             return new CategoryDto
             {
                 Id = category.Id,
-                Name = category.Name
+                Name = category.Name,
+                IsLocked = category.IsLocked ?? false
             };
         }
 
@@ -63,6 +66,7 @@ namespace NEWS.Core.Services
             }
 
             existingCategory.Name = model.Name;
+            existingCategory.IsLocked = model.IsLocked;
 
             _categoryRepo.Update(existingCategory);
             await _categoryRepo.SaveChangesAsync();

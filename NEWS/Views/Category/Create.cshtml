@@ -2,16 +2,23 @@
 @{
     ViewData["Title"] = "Category Create";
 }
-@model IEnumerable<CategoryDto>
+@model CategoryDto
 <div class="section-top-border">
     <div class="row">
         <div class="col-lg-4 col-md-4 my-box">
             <h3 class="mb-20">Categories</h3>
             <form method="post">
                 <div class="mt-1">
-                    <input type="text" name="name" placeholder="Enter category name.."
-                           onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Name'" required
+                    <input type="text" asp-for="Name" placeholder="Enter category name.."
                            class="single-input">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="switch-wrap d-flex justify-content-between mt-10 center">
+                    <span>Lock this category for users without profile:</span>
+                    <div class="confirm-switch">
+                        <input asp-for="IsLocked" type="checkbox" id="confirm-switch" class="is-locked" checked="@Model?.IsLocked">
+                        <label for="confirm-switch"></label>
+                    </div>
                 </div>
                 <button type="submit" class="genric-btn info radius mt-20">Add Category</button>
             </form>
@@ -24,16 +31,16 @@
             <div class="serial">#</div>
             <div class="country">Name</div>
         </div>
-        @for (int i = 0; i < Model.Count(); i++)
+        @for (int i = 0; i < ViewBag.Categories.Count; i++)
         {
             <div class="table-row">
                 <div class="serial">@(i + 1)</div>
-                <div class="country">@Model.ToList()[i].Name</div>
+                <div class="country">@ViewBag.Categories[i].Name</div>
                 <div>
-                    <a href="@Url.Action("Edit", "Category", new { id = Model.ToList()[i].Id })" class="genric-btn warning radius mr-10">Edit</a>
+                    <a href="@Url.Action("Edit", "Category", new { id = ViewBag.Categories[i].Id })" class="genric-btn warning radius mr-10">Edit</a>
                 </div>
                 <div>
-                    <a href="@Url.Action("Delete", "Category", new { id = Model.ToList()[i].Id })" class="genric-btn danger radius">Delete</a>
+                    <a href="@Url.Action("Delete", "Category", new { id = ViewBag.Categories[i].Id })" class="genric-btn danger radius">Delete</a>
                 </div>
             </div>
         }

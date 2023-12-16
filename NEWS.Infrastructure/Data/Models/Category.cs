@@ -16,6 +16,8 @@ namespace NEWS.Infrastructure.Data.Models
         [StringLength(50)]
         public string Name { get; set; }
 
+        public bool? IsLocked { get; set; }
+
         public ICollection<News> Products { get; set; } = new List<News>();
     }
 }

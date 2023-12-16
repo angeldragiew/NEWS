@@ -15,7 +15,15 @@
                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                         @foreach (var category in ViewBag.Categories)
                                         {
-                                            <a class="nav-item nav-link" href="/News/All/@category.Id">@category.Name</a>
+                                            @if (category.IsLocked && !User?.Identity?.IsAuthenticated)
+                                            {
+                                                <a class="nav-item nav-link" href="/Identity/Account/Login">@category.Name</a>
+                                            }
+                                            else
+                                            {
+                                                <a class="nav-item nav-link" href="/News/All/@category.Id">@category.Name</a>
+                                            }
+
                                         }
                                     </div>
                                 </nav>

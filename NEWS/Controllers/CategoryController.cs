@@ -17,8 +17,8 @@ namespace NEWS.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var categories = await _categoryService.All();
-            return View(categories);
+            ViewBag.Categories = await _categoryService.All();
+            return View();
         }
 
         [HttpPost]
@@ -27,8 +27,8 @@ namespace NEWS.Controllers
             if (!ModelState.IsValid)
             {
                 TempData[MessageConstant.ErrorMessage] = "Invalid data!";
-                var categories = await _categoryService.All();
-                return View(categories);
+                ViewBag.Categories = await _categoryService.All();
+                return View(category);
             }
 
             try
