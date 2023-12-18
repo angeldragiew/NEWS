@@ -34,7 +34,12 @@
                     </div>
                 </div>
                 <div class="mt-1">
-                    <input asp-for="Image" placeholder="Enter title.." multiple class="single-input" value="@(Model?.Image)">
+                    <span class="img-video-label mr-3">Upload Image: </span>
+                    <input asp-for="Image" class="single-input img-video-input" accept="image/*">
+                </div>
+                <div class="mt-1">
+                    <span class="img-video-label mr-3">Upload Video: </span>
+                    <input asp-for="Video" class="single-input img-video-input" accept="video/*">
                 </div>
                 <button type="submit" class="genric-btn info radius mt-20">Update News</button>
             </form>

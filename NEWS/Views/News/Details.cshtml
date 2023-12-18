@@ -22,6 +22,11 @@
                                 <p class="about-pera1 mb-25">@paragraph</p>
                             }
                         </div>
+                        @if(!string.IsNullOrEmpty(Model.Video)){
+                            <video width="100%" height="398px" class="video" controls>
+                                <source src="~/uploads/@Model.Video" type="video/mp4">
+                            </video>
+                        }
                         <span class="about-pera1 float-right"><b>@Model.Author | @Model.Date</b></span>
                     </div>
                 </div>

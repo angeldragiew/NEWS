@@ -24,6 +24,9 @@ namespace NEWS.Core.Dtos.News
         public IFormFile? Image { get; set; }
         public string? ImageStr { get; set; }
 
+        public IFormFile? Video { get; set; }
+        public string? VideoStr { get; set; }
+
         [Required]
         public int? CategoryId { get; set; }
     }

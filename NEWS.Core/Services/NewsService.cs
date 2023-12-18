@@ -45,6 +45,7 @@ namespace NEWS.Core.Services
             {
                 CategoryId = dto.CategoryId,
                 Image = UploadFile(dto.Image),
+                Video = UploadFile(dto.Video),
                 ApplicationUserId = _userManager.GetUserId(_httpContextAccessor!.HttpContext!.User),
                 Date = DateTime.Now,
                 Text = dto.Text,
@@ -68,6 +69,12 @@ namespace NEWS.Core.Services
                 existingNew.Image = UploadFile(dto.Image);
             }
 
+            if (dto.Video is not null)
+            {
+                DeleteFile(existingNew.Video);
+                existingNew.Video = UploadFile(dto.Video);
+            }
+
             existingNew.Date = DateTime.Now;
             existingNew.Title = dto.Title;
             existingNew.CategoryId = dto.CategoryId;
@@ -89,7 +96,6 @@ namespace NEWS.Core.Services
             {
                 Id = news.Id,
                 Title = news.Title,
-                ImageStr = news.Image,
                 CategoryId = news.CategoryId,
                 Text = news.Text
             };
@@ -173,6 +179,7 @@ namespace NEWS.Core.Services
                 CategoryName = detailsNews.Category.Name,
                 Date = detailsNews.Date.ToString("MM.dd.yyyy"),
                 Image = detailsNews.Image,
+                Video = detailsNews.Video,
                 Title = detailsNews.Title,
                 Paragraphes = detailsNews.Text.Split(Environment.NewLine).ToList(),
                 SimilarNews = similarNews

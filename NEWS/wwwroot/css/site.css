@@ -61,3 +61,17 @@ body {
     height:150px;
     object-fit:cover;
 }
+
+.img-video-label{
+    font-size:1.2em;
+}
+
+.img-video-input {
+    width:50% !important;
+    display:inline-block !important;
+}
+
+.video {
+    border: 2px solid black;
+    border-radius:2px;
+}

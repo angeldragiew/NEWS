@@ -15,6 +15,7 @@ namespace NEWS.Core.Dtos.News
         public string Date { get; set; }
         public string Title { get; set; }
         public string Image { get; set; }
+        public string Video { get; set; }
         public string CategoryName { get; set; }
         public string Author { get; set; }
         public List<string> Paragraphes { get; set; }

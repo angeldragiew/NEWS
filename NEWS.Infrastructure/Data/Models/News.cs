@@ -24,6 +24,7 @@ namespace NEWS.Infrastructure.Data.Models
         public string Text { get; set; }
 
         public string Image { get; set; }
+        public string? Video { get; set; }
 
         [Required]
         public int? CategoryId { get; set; }
